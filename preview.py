@@ -4,8 +4,12 @@ import logging
 import dotenv
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from rich.console import Console
+from rich.markdown import Markdown
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 dotenv.load_dotenv()
 
 
@@ -13,6 +17,7 @@ LLM_MODEL = os.getenv("LLM_MODEL") or "o1-mini"
 LANGUAGE = os.getenv("LANGUAGE") or "ENGLISH"
 
 llm = ChatOpenAI(model="o1-mini")
+console = Console()
 
 
 def main():
@@ -24,7 +29,7 @@ def main():
 
     formatted_review = format_review(review)
 
-    logging.info(formatted_review)
+    console.print(formatted_review)
 
 
 def check_env():
@@ -49,7 +54,7 @@ def get_review(diff: str) -> str:
         [
             (
                 "assistant",
-                "Review the user's git diff, checking for typos, grammar, and code style issue.",
+                f"Review the user's git diff, checking for typos, grammar, and code style issues. MAKE OUTPUT BY {LANGUAGE}.",
             ),
             ("human", diff),
         ]
@@ -59,9 +64,9 @@ def get_review(diff: str) -> str:
 
 
 def format_review(review: str) -> str:
-    formatted_review = review
+    diff_syntax = Markdown(review, code_theme="ansi_dark")
 
-    return formatted_review
+    return diff_syntax
 
 
 if __name__ == "__main__":
