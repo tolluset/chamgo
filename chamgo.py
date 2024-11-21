@@ -4,7 +4,7 @@ import logging
 import dotenv
 import argparse
 
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 from rich.console import Console
 from rich.markdown import Markdown
 
@@ -88,7 +88,3 @@ def format_review(review: str) -> str:
     diff_syntax = Markdown(review, code_theme="ansi_dark")
 
     return diff_syntax
-
-
-if __name__ == "__main__":
-    main()
