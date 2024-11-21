@@ -14,4 +14,4 @@ dependencies = [
 dev = ["build>=1.2.2.post1", "python-dotenv>=1.0.1", "twine>=5.1.1"]
 
 [project.scripts]
-chamgo = "chamgo.chamgo.main"
+chamgo = "chamgo.chamgo:main"
