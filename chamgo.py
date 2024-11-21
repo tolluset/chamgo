@@ -90,3 +90,7 @@ def format_review(review: str):
     diff_syntax = Markdown(review, code_theme="ansi_dark")
 
     return diff_syntax
+
+
+if __name__ == "__main__":
+    main()
