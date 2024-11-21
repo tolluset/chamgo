@@ -11,7 +11,4 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    "build>=1.2.2.post1",
-    "twine>=5.1.1",
-]
+dev = ["build>=1.2.2.post1", "twine>=5.1.1"]
