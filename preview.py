@@ -2,34 +2,55 @@ import os
 import subprocess
 import logging
 import dotenv
+import argparse
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from rich.console import Console
 from rich.markdown import Markdown
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.WARN, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 dotenv.load_dotenv()
 
 
-LLM_MODEL = os.getenv("LLM_MODEL") or "o1-mini"
-LANGUAGE = os.getenv("LANGUAGE") or "ENGLISH"
+MODEL = os.getenv("MODEL")
+LANGUAGE = os.getenv("LANGUAGE")
 
-llm = ChatOpenAI(model="o1-mini")
 console = Console()
 
 
 def main():
+    args = parse_args()
     check_env()
+
+    model, language = args
+
+    llm = ChatOpenAI(model=model)
 
     diff = get_diff()
 
-    review = get_review(diff)
+    review = get_review(llm, diff, language=language)
 
     formatted_review = format_review(review)
 
     console.print(formatted_review)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-m", "--model", type=str, help="Specify the model. (default: o1-mini)"
+    )
+    parser.add_argument(
+        "-l", "--language", type=str, help="Specify the language. (default: ENGLISH)"
+    )
+    args = parser.parse_args()
+
+    args.model = args.model or MODEL or "o1-mini"
+    args.language = args.language or LANGUAGE or "ENGLISH"
+
+    return args.model, args.language
 
 
 def check_env():
@@ -49,12 +70,12 @@ def get_diff() -> str:
     return result.stdout.decode("utf-8")
 
 
-def get_review(diff: str) -> str:
+def get_review(llm: ChatOpenAI, diff: str, language: str) -> str:
     review = llm.invoke(
         [
             (
                 "assistant",
-                f"Review the user's git diff, checking for typos, grammar, and code style issues. MAKE OUTPUT BY {LANGUAGE}.",
+                f"Review the user's git diff, checking for typos, grammar, and code style issues. OUTPUT THE REVIEW IN {language}.",
             ),
             ("human", diff),
         ]
