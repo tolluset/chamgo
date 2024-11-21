@@ -86,9 +86,7 @@ def get_review(llm: ChatOpenAI, diff: str, language: str) -> str:
     return review
 
 
-def format_review(review: str) -> str:
+def format_review(review: str):
     diff_syntax = Markdown(review, code_theme="ansi_dark")
-
-    diff_syntax = str(diff_syntax)
 
     return diff_syntax
