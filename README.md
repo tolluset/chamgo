@@ -1,12 +1,12 @@
-# preview
+# chamgo
 
 Review my commit.
 
 ## How to use
 
 ```bash
-pip install preview
-python -m preview
+pip install chamgo
+python -m chamgo
 ```
 
 ## Requirements

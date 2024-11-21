@@ -451,7 +451,7 @@ wheels = [
 ]
 
 [[package]]
-name = "preview"
+name = "chamgo"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
